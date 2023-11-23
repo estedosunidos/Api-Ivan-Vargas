@@ -1,6 +1,7 @@
-.env
+package-lock.json
+package.json
+.env/
 node_modules
 dist/
-buid/
-mongo/
+build/
 .env

@@ -2,9 +2,9 @@
 import { AssignMovieToPlatformDto } from "../dtos/AssignMovieToPlatformDto";
 import { CreateReviewDto } from "../dtos/CreateReviewDto ";
 import { DeleteMovieDto } from "../dtos/DeleteMovieDto";
+import { GetByIdMoviesDTP } from "../dtos/GetByIdMovies";
 import { PaginacionMovieDto } from "../dtos/PaginacionDto";
 import { RegisteMovieDto } from "../dtos/RegisterMoviesDto";
-import { ReviewByPlatformDto, ReviewDto } from "../dtos/ReviewByPlatformDto ";
 import { UpdateMovieDto } from "../dtos/UpdateMovieDto";
 import { CloneMovieDto } from "../dtos/clonamoviesDto";
 import { MoviesEntity } from "../entities/Movies.Entity";
@@ -15,10 +15,9 @@ export abstract class MoviesDatasource {
     abstract readMovies():Promise<MoviesEntity[]>
     abstract cloneMovie(cloneMovieDto:CloneMovieDto): Promise<MoviesEntity>;
     abstract UpdateMovie(updateMovieDto:UpdateMovieDto):Promise<MoviesEntity>
-    abstract updateMovie(updateMovieDto: UpdateMovieDto, platformId: string): Promise<MoviesEntity>;
     abstract assignMovieToPlatform(assignMovieToPlatformDto: AssignMovieToPlatformDto): Promise<MoviesEntity>;
     abstract createReview(createReviewDto: CreateReviewDto): Promise<MoviesEntity>;
-    abstract GetByIdMovie(reviewByPlatformDto:ReviewByPlatformDto):Promise <ReviewEntity>
+    abstract GetByIdMovie(getByIdMoviesDTP:GetByIdMoviesDTP):Promise <ReviewEntity[] >
     abstract deleteMovie(deleteMovieDto: DeleteMovieDto): Promise<void>;
     abstract PaginacionMovie(paginacionMovieDto:PaginacionMovieDto): Promise<MoviesEntity[]>;
 }

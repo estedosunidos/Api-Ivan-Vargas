@@ -1,17 +1,8 @@
 export class DeleteMovieDto {
-  movieId: string;
-
-  constructor(movieId: string) {
-    this.movieId = movieId;
-  }
-
+  constructor(public id: string) {}
   static create(object: { [key: string]: any }): [string?, DeleteMovieDto?] {
-    const { movieId } = object;
+    const { id } = object;
 
-    if (!movieId) {
-      return ['Missing movieId'];
-    }
-
-    return [undefined, new DeleteMovieDto(movieId)];
+    return [undefined, new DeleteMovieDto(id)];
   }
 }

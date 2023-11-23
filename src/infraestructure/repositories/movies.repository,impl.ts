@@ -3,9 +3,9 @@ import { MoviesDatasource } from "../../domain/datasources/movies.datasource";
 import { AssignMovieToPlatformDto } from "../../domain/dtos/AssignMovieToPlatformDto";
 import { CreateReviewDto } from "../../domain/dtos/CreateReviewDto ";
 import { DeleteMovieDto } from "../../domain/dtos/DeleteMovieDto";
+import { GetByIdMoviesDTP } from "../../domain/dtos/GetByIdMovies";
 import { PaginacionMovieDto } from "../../domain/dtos/PaginacionDto";
 import { RegisteMovieDto } from "../../domain/dtos/RegisterMoviesDto";
-import { ReviewByPlatformDto, ReviewDto } from "../../domain/dtos/ReviewByPlatformDto ";
 import { UpdateMovieDto } from "../../domain/dtos/UpdateMovieDto";
 import { CloneMovieDto } from "../../domain/dtos/clonamoviesDto";
 import { MoviesEntity } from "../../domain/entities/Movies.Entity";
@@ -21,8 +21,8 @@ export class MooviesRepositoryImple implements MoviesRepository {
   deleteMovie(deleteMovieDto: DeleteMovieDto): Promise<void> {
     return this.moviesdatasource.deleteMovie(deleteMovieDto);
   }
-  GetByIdMovie(reviewByPlatformDto: ReviewByPlatformDto): Promise<ReviewEntity> {
-    return this.moviesdatasource.GetByIdMovie(reviewByPlatformDto);
+  GetByIdMovie(getByIdMoviesDTP: GetByIdMoviesDTP): Promise<ReviewEntity[] > {
+    return this.moviesdatasource.GetByIdMovie(getByIdMoviesDTP);
   }
   // createReview(assignMovieToPlatformDto: AssignMovieToPlatformDto): Promise<MoviesEntity> {
   //   return this.moviesdatasource.createReview(assignMovieToPlatformDto);

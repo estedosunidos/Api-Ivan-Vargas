@@ -1,21 +1,20 @@
-export class GetByIdMovies {
+export class GetByIdMoviesDTP{
     movieId: string;
-    platformId:string;
+    
   
   
-    constructor(movieId: string,platformId:string)  {
+    constructor(movieId: string)  {
       this.movieId = movieId;
-      this.platformId=platformId
     }
   
-    static assigner(object: { [key: string]: any }): [string?, GetByIdMovies?] {
+    static assigner(object: { [key: string]: any }): [string?, GetByIdMoviesDTP?] {
       const { movieId,platformId } = object;
-  
-      if (!movieId) return ['Missing movieId'];
+    console.log(movieId,platformId)
+      
   
       return [
         undefined,
-        new GetByIdMovies(movieId,platformId)
+        new GetByIdMoviesDTP(movieId)
       ];
     }
   }

@@ -1,4 +1,3 @@
-// clone-movie.dto.ts
 
 export class PaginacionMovieDto {
     constructor(

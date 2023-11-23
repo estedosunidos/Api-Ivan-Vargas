@@ -8,7 +8,7 @@ import { PaginacionMovieDto } from "../dtos/PaginacionDto";
 import { ReviewEntity } from "../entities/Review.Entitis";
 import { AssignMovieToPlatformDto } from "../dtos/AssignMovieToPlatformDto";
 import { CreateReviewDto } from "../dtos/CreateReviewDto ";
-import { ReviewByPlatformDto, ReviewDto } from "../dtos/ReviewByPlatformDto ";
+import { GetByIdMoviesDTP } from "../dtos/GetByIdMovies";
 //Aqui todas la regla de negocio
 export abstract class MoviesRepository {
     abstract register(registemoviesdto:RegisteMovieDto):Promise<MoviesEntity>
@@ -20,6 +20,6 @@ export abstract class MoviesRepository {
     abstract PaginacionMovie(paginacionMovieDto:PaginacionMovieDto): Promise<MoviesEntity[]>;
     abstract assignMovieToPlatform(assignMovieToPlatformDto: AssignMovieToPlatformDto): Promise<MoviesEntity>;
     abstract createReview(createReviewDto: CreateReviewDto): Promise<MoviesEntity>;
-    abstract GetByIdMovie(reviewByPlatformDto:ReviewByPlatformDto):Promise<ReviewDto>
+    abstract GetByIdMovie(getByIdMoviesDTP:GetByIdMoviesDTP):Promise<ReviewEntity[] >
     abstract deleteMovie(deleteMovieDto: DeleteMovieDto): Promise<void>;
 }

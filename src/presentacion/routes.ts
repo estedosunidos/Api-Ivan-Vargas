@@ -20,15 +20,15 @@ export class AppRouets {
     //Ruta del crud de peliculas
 
     router.get("/readyMovies", controller.readMovies);
-    router.get("/paginacionMovies", controller.Paginacionpelicula);
-    router.get("/moviebyid/:id", controller.Paginacionpelicula);
+    router.get("/paginacionMovies/:page?/:pageSize?", controller.Paginacionpelicula);
+    router.get("/moviebyid/:movieId", controller.moviebyid);
     router.post("/createMovies", controller.registerMovies);
-    //router.post("/ClonaPelicula/:id", controller.Clonapelicula);
+    router.post("/ClonaPelicula/:id", controller.Clonapelicula);
     router.put("/UpdateMovies/:id", controller.UpdadeMovies);
     router.post("/assignertomovietoplatform",controller.Assignartoplatformtomovies)
     router.delete("/deleteMovies/:id", controller.deleteMovies)
     router.post("/Assignartoreviewtomovies", controller.Assignartoreviewtomovies);
-    //ruta del cr bde platafaoma (Netflix,Disney pls, HBO MAX,Hulu,Apple tv and Amazon prime)
+    //ruta de platafaoma (Netflix,Disney pls, HBO MAX,Hulu,Apple tv and Amazon prime)
     router.get("/readyPlatform", controller3.readPltform);
     router.post("/createPlatform", controller3.registerPlatform);
     return router;

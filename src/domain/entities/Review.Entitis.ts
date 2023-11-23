@@ -6,6 +6,8 @@ export class ReviewEntity {
     public platformId: string,
     public author: string,
     public body: string,
-    public score: number
+    public score: number,
+    public createdAt:Date,
+  public updatedAt:Date
   ) {}
 }
