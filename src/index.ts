@@ -18,7 +18,7 @@ async function main (){
     //todo: awaiy de nuestro servidor
 
     new Server({
-        port:4100,
+        port:envs.PORT,
         routes:AppRouets.routes
 
     }
