@@ -13,11 +13,16 @@ export class MongoDatabase{
           if (!mongoUrl) {
             throw new Error('La URL de MongoDB es obligatoria.');
           }
+          mongoose.set('strictQuery', false);
+          const mongoUrl1 = mongoUrl;
+          const dbName1 = dbName;
+          const options: mongoose.ConnectOptions = {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            dbName: dbName1,
+          };
     
-          await mongoose.connect(mongoUrl, {
-          
-            dbName:  dbName || 'defaultDbName'
-          });
+          mongoose.connect(mongoUrl1, options);
             console.log('Conectado correctamente a la base de datos');
           } catch (err) {
             console.error(err);
