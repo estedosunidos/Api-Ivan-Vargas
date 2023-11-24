@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsnd --respawn --clear src/index.ts",
     "start": "npm run dev"
   },
   "engines": {
