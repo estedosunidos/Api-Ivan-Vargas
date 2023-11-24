@@ -4,9 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsnd --respawn --clear src/server.ts",
+    "dev": "tsnd --respawn --clear src/index.ts",
     "build": "rimraf ./dist && tsc",
-    "starts": "npm run build && node/dist/server.js",
+    "start": "npm run dev",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write 'src/**/*.ts'"
