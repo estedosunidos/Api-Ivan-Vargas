@@ -4,12 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsnd --respawn --clear src/index.ts",
-    "build": "rimraf ./dist && tsc",
-    "start": "npm run dev",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
-    "format": "prettier --write 'src/**/*.ts'"
+    "start": "npm run dev"
   },
   "engines": {
     "node": " 16.6.0"
