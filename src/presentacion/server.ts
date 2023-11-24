@@ -15,16 +15,7 @@ export class Server {
   }
   async start() {
     console.log('Hola Mundo')
-    // Restricción de IP
-    const allowedIPs = ["100.20.92.101", "44.225.181.72","44.227.217.144"];
-    this.app.use((req: Request, res: Response, next: NextFunction) => {
-      const clientIP: string = req.ip!;
-      if (allowedIPs.includes(clientIP)) {
-        next();
-      } else {
-        res.status(403).send("Acceso no autorizado");
-      }
-    });
+  
     this.app.use(express.json());
     this.app.use(cors());
     this.app.use(express.urlencoded({ extended: true }));
