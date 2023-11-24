@@ -11,6 +11,8 @@ export class ReviewMapper {
         author: review.author,
         body: review.body,
         score: review.score,
+        createdAt:review.createdAt,
+        updatedAt:review.updatedAt
       };
     }
   
@@ -21,7 +23,9 @@ export class ReviewMapper {
         dto.platformId,
         dto.author,
         dto.body,
-        dto.score
+        dto.score,
+        dto.createdAt,
+        dto.updatedAt
       );
   
     

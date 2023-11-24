@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 
 interface Opitions{
-    port?:number;
+    port:number;
     routes:Router;
 }
 export class Server {
@@ -14,11 +14,10 @@ export class Server {
         this.routes=routes
     }
     async start(){
-        this.app.set('PORT',process.env.PORT || 3000)
         this.app.use(express.json())
         this.app.use(express.urlencoded({extended:true}))
         this.app.use(this.routes)
-        this.app.listen(this.app.get('PORT'),()=>{
+        this.app.listen(this.port,()=>{
             console.log("listening on port " + this.port)
         })
     }
