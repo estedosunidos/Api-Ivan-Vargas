@@ -17,8 +17,6 @@ export class MongoDatabase{
           const mongoUrl1 = mongoUrl;
           const dbName1 = dbName;
           const options: mongoose.ConnectOptions = {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
             dbName: dbName1,
           };
     
