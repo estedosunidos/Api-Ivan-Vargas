@@ -9,7 +9,7 @@ export class Server {
   private readonly port: number;
   private readonly routes: Router;
   constructor(option: Opitions) {
-    const { port = 3100, routes } = option;
+    const { port = 8000, routes } = option;
     this.port = port;
     this.routes = routes;
   }
