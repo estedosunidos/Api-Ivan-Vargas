@@ -13,7 +13,7 @@ async function main (){
 
     await MongoDatabase.connect({
         dbName:envs.MONGO_DB_NAME,
-        mongoUrl:envs.MONGO_URL
+        mongoUrl:envs.MONGO_DB_URL
     })
 
     //todo: awaiy de nuestro servidor

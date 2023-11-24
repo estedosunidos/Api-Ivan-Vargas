@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { envs } from "../../config/envs";
 
 interface Options{
     mongoUrl:string
@@ -9,7 +10,7 @@ export class MongoDatabase{
     static async connect(options: Options){
         const {mongoUrl,dbName} = options
         try {
-            await mongoose.connect('mongodb://127.0.0.1:27017/pruebatecnicaGGTech', {
+            await mongoose.connect(envs.MONGO_DB_URL, {
     
             });
             console.log('Conectado correctamente a la base de datos');

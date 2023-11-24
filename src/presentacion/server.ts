@@ -14,10 +14,11 @@ export class Server {
         this.routes=routes
     }
     async start(){
+        this.app.set('PORT',process.env.PORT || 3000)
         this.app.use(express.json())
         this.app.use(express.urlencoded({extended:true}))
         this.app.use(this.routes)
-        this.app.listen(this.port,()=>{
+        this.app.listen(this.app.get('PORT'),()=>{
             console.log("listening on port " + this.port)
         })
     }
