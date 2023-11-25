@@ -18,91 +18,96 @@ import { DeleteMovieDto } from "../../domain/dtos/DeleteMovieDto";
 import { CreateReviewDto } from "../../domain/dtos/CreateReviewDto ";
 import { GetByIdMoviesDTP } from "../../domain/dtos/GetByIdMovies";
 export class MovsiesDataSourceImpl implements MoviesDatasource {
- async  GetByIdMovie(getByIdMoviesDTP: GetByIdMoviesDTP): Promise<ReviewEntity[] > {
-  try {
-    const { movieId } = getByIdMoviesDTP;
-    console.log(movieId);
-    // Obtén la película por su ID
-    const movie = await MoviesModel.findById(movieId);
+  async GetByIdMovie(
+    getByIdMoviesDTP: GetByIdMoviesDTP
+  ): Promise<ReviewEntity[]> {
+    try {
+      const { movieId } = getByIdMoviesDTP;
+      console.log(movieId);
+      // Obtén la película por su ID
+      const movie = await MoviesModel.findById(movieId);
 
-    if (!movie) {
-      throw new CustomError(404, 'Movie not found');
+      if (!movie) {
+        throw new CustomError(404, "Movie not found");
+      }
+
+      // Filtra las reseñas por plataforma
+      const reviewsByPlatform = await ReviewModel.find({
+        movie: movieId,
+      }).exec();
+      console.log(reviewsByPlatform);
+      if (reviewsByPlatform.length === 0) {
+        throw new CustomError(
+          404,
+          "No reviews found for the specified platform"
+        );
+      }
+
+      const reviewsEntities: ReviewEntity[] = reviewsByPlatform.map(
+        (review) => ({
+          id: review.id,
+          movieId: String(review.movie),
+          platformId: String(review.platform),
+          author: review.author,
+          body: review.body,
+          score: review.score,
+          createdAt: review.createdAt,
+          updatedAt: review.updatedAt,
+        })
+      );
+      // Devuelve la reseña transformada a ReviewEntity
+      return reviewsEntities;
+    } catch (error) {
+      console.error("Error getting reviews by movie:", error);
+      throw new CustomError(500, "Internal Server Error");
     }
-
-    // Filtra las reseñas por plataforma
-    const reviewsByPlatform = await ReviewModel.find({ movie: movieId}).exec();
-    console.log(reviewsByPlatform)
-    if (reviewsByPlatform.length === 0) {
-      throw new CustomError(404, 'No reviews found for the specified platform');
-    }
-
-    
-    const reviewsEntities: ReviewEntity[] = reviewsByPlatform.map((review) => ({
-      id: review.id,
-      movieId: String(review.movie),
-      platformId: String(review.platform),
-      author: review.author,
-      body: review.body,
-      score: review.score,
-      createdAt: review.createdAt,
-      updatedAt: review.updatedAt,
-    }));
-    // Devuelve la reseña transformada a ReviewEntity
-    return reviewsEntities;
-  } catch (error) {
-    console.error('Error getting reviews by movie:', error);
-    throw new CustomError(500, 'Internal Server Error');
-  }
   }
 
   async createReview(createReviewDto: CreateReviewDto): Promise<MoviesEntity> {
-       try {
-       const { movieId, platformId, author, body, score } =
-       createReviewDto;
-       console.log(movieId, platformId, author, body, score);
-       const movie = await MoviesModel.findById(movieId);
-       console.log(movie);
-       if (!movie) {
-         throw new Error("Movie not found");
-       }
+    try {
+      const { movieId, platformId, author, body, score } = createReviewDto;
+      console.log(movieId, platformId, author, body, score);
+      const movie = await MoviesModel.findById(movieId);
+      console.log(movie);
+      if (!movie) {
+        throw new Error("Movie not found");
+      }
 
-  //     // Crea la reseña y asigna a la película
-       const review = new ReviewModel({
-         movie: movieId,
-       platform: platformId,
-       author: author,
-         body: body,
-         score: score,
-       });
+      //     // Crea la reseña y asigna a la película
+      const review = new ReviewModel({
+        movie: movieId,
+        platform: platformId,
+        author: author,
+        body: body,
+        score: score,
+      });
 
-  //     // Guarda la reseña en la base de datos
-       const savedReview = await review.save();
+      //     // Guarda la reseña en la base de datos
+      const savedReview = await review.save();
 
-  //     // Actualiza la película con la nueva reseña
-       movie.reviews.push(savedReview._id);
-       const updatedMovie = await movie.save();
+      //     // Actualiza la película con la nueva reseña
+      movie.reviews.push(savedReview._id);
+      const updatedMovie = await movie.save();
 
-  //     // Mapea la respuesta a la entidad
-       const moviesEntity = MoviesMapper.MoviesEntityFromObject(
-         updatedMovie.toObject()
-       );
+      //     // Mapea la respuesta a la entidad
+      const moviesEntity = MoviesMapper.MoviesEntityFromObject(
+        updatedMovie.toObject()
+      );
 
-       return Promise.resolve(moviesEntity);
-     } catch (error) {
-  //     //console.error(`Error creating review: ${error.message}`);
-       throw CustomError.internalserverError("Error creating review");
-     }
+      return Promise.resolve(moviesEntity);
+    } catch (error) {
+      //     //console.error(`Error creating review: ${error.message}`);
+      throw CustomError.internalserverError("Error creating review");
+    }
   }
-     
-  
+
   async deleteMovie(deleteMovieDto: DeleteMovieDto): Promise<void> {
     try {
-      
       await MoviesModel.deleteOne({ _id: deleteMovieDto.id });
     } catch (error) {
       // Manejar errores
       //console.error(`Error deleting movie: ${error.message}`);
-      throw new Error('Error deleting movie');
+      throw new Error("Error deleting movie");
     }
   }
   async assignMovieToPlatform(
@@ -136,7 +141,9 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
     }
   }
 
-  async PaginacionMovie(paginacionMovieDto: PaginacionMovieDto): Promise<MoviesEntity[]> {
+  async PaginacionMovie(
+    paginacionMovieDto: PaginacionMovieDto
+  ): Promise<MoviesEntity[]> {
     try {
       const { page, pageSize } = paginacionMovieDto;
       console.log(page, pageSize);
@@ -145,9 +152,11 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
         .skip(skip)
         .limit(pageSize)
         .exec();
-      console.log(paginatedMovies)
-      const paginatedMoviesEntities = paginatedMovies.map(movie => MoviesMapper.MoviesEntityFromObject(movie.toObject()));
-      
+      console.log(paginatedMovies);
+      const paginatedMoviesEntities = paginatedMovies.map((movie) =>
+        MoviesMapper.MoviesEntityFromObject(movie.toObject())
+      );
+
       return paginatedMoviesEntities;
     } catch (error) {
       console.error("Error fetching paginated movies:", error);
@@ -159,82 +168,82 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
     try {
       const { id } = cloneMovieDto;
       console.log(id);
-  
+
       const originalMovie = await MoviesModel.findById(id);
       console.log(originalMovie);
-  
+
       if (!originalMovie) {
-        throw new Error('Original movie not found');
+        throw new Error("Original movie not found");
       }
-  
+
       const newMovieId = new ObjectId();
       console.log(newMovieId);
-  
+
       const clonedMovieData = {
-        _id: newMovieId, // Use _id instead of id for consistency
+        _id: newMovieId, 
+        title: originalMovie.title, 
+        director: originalMovie.director, 
+        score: originalMovie.score,
         createdAt: new Date(),
-        // Include other properties from originalMovie that you want to clone
       };
-  
+
       const clonedMovie = await MoviesModel.create(clonedMovieData);
-      
-      // You can choose to return clonedMovie directly if you don't need toObject()
       return clonedMovie.toObject();
     } catch (error) {
-      console.error('Error cloning movie:', error);
-      throw new Error('Error cloning movie');
+      console.error("Error cloning movie:", error);
+      throw new Error("Error cloning movie");
     }
   }
-  
-  
+
   //ESTE ENDPOINT SIRVE PARA ACTUALIZAR LA PELICULA EN LA BASE DE DATO
-  async UpdateMovie(updateemoviesdto: UpdateMovieDto): Promise<MoviesEntity>{
+  async UpdateMovie(updateemoviesdto: UpdateMovieDto): Promise<MoviesEntity> {
     const { movieId, title, director, score } = updateemoviesdto;
     console.log(movieId, title, director, score);
-  
+
     try {
       // 1. Encuentra la película por ID
       const movie = await MoviesModel.findById(movieId);
       console.log(movie);
-  
+
       if (!movie) {
         throw new Error("Película no encontrada");
       }
-  
+
       // 2. Genera el slug
       const slug = slugify(title, {
         lower: true,
         remove: /[*+~.()'"!:@]/g,
       });
-  
+
       // 3. Actualiza las propiedades de la película
-      movie.id=movieId
+      movie.id = movieId;
       movie.title = title;
       movie.slug = slug;
       movie.director = director;
       movie.score = score;
-     // movie.updatedAt = Date.now();
-  
+      // movie.updatedAt = Date.now();
+
       // 4. Guarda la película actualizada
       const updatedMovie = await movie.save();
-  
+
       // 5. Mapea la respuesta a nuestra entidad
-      const movieEntity = MoviesMapper.MoviesEntityFromObject(updatedMovie.toObject());
-  
+      const movieEntity = MoviesMapper.MoviesEntityFromObject(
+        updatedMovie.toObject()
+      );
+
       // 6. Devuelve la entidad
       return movieEntity;
     } catch (error) {
       console.error("Error al actualizar la película:", error);
-  
+
       if (error instanceof CustomError) {
         throw error;
       }
-  
+
       throw new Error("Error al actualizar la película");
     }
-  };
+  }
 
-  
   //ESTE ENDPOINT SIRVE PARA CREAR UNA PELICULA Y ALMACENARLA EN LA BASE DE DATO
   async register(registemoviesdto: RegisteMovieDto): Promise<MoviesEntity> {
     const { title, director, score } = registemoviesdto;
