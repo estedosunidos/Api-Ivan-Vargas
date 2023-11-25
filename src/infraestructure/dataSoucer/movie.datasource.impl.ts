@@ -157,28 +157,35 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
   //ESTE ENDPOINT SIRVE PARA CLONAR UNA PELICULAR  Y GENERAL UN NUEVO ID
   async cloneMovie(cloneMovieDto: CloneMovieDto): Promise<MoviesEntity> {
     try {
-      const { id} = cloneMovieDto;
-      console.log(  id)
-     
+      const { id } = cloneMovieDto;
+      console.log(id);
+  
       const originalMovie = await MoviesModel.findById(id);
-      console.log( originalMovie)
+      console.log(originalMovie);
+  
       if (!originalMovie) {
         throw new Error('Original movie not found');
       }
-      const newMovieId = new ObjectId().toString();
-      console.log(newMovieId)
+  
+      const newMovieId = new ObjectId();
+      console.log(newMovieId);
+  
       const clonedMovieData = {
-        id: newMovieId,
+        _id: newMovieId, // Use _id instead of id for consistency
         createdAt: new Date(),
+        // Include other properties from originalMovie that you want to clone
       };
+  
       const clonedMovie = await MoviesModel.create(clonedMovieData);
-      const updatedMovie = await clonedMovie.save();
-      return updatedMovie.toObject();
+      
+      // You can choose to return clonedMovie directly if you don't need toObject()
+      return clonedMovie.toObject();
     } catch (error) {
       console.error('Error cloning movie:', error);
       throw new Error('Error cloning movie');
     }
   }
+  
   
   //ESTE ENDPOINT SIRVE PARA ACTUALIZAR LA PELICULA EN LA BASE DE DATO
   async UpdateMovie(updateemoviesdto: UpdateMovieDto): Promise<MoviesEntity>{
