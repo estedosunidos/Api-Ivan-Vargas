@@ -8,9 +8,7 @@ export class MoviesMapper {
     static MoviesEntityFromObject(object: { [key: string]: any }) {
         const { _id, id, title, slug, director, createdAt, updatedAt, score, reviews, platforms } = object;
       
-        if (!title) throw CustomError.NotFound('Missing Title');
-        if (!director) throw CustomError.NotFound('Missing director');
-        if (!score) throw CustomError.NotFound('Missing score');
+        
 
         // Mapea los objetos de reviews y platforms a instancias de ReviewEntity
         const mappedReviews: ReviewEntity[] = reviews.map((review: any) => new ReviewEntity(review.id,review.movieId, review.platformId, review.author, review.body, review.score,review.createdAt, review.updatedAt));
