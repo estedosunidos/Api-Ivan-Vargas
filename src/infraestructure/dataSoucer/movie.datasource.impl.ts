@@ -165,7 +165,7 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
       if (!originalMovie) {
         throw new Error('Original movie not found');
       }
-      const newMovieId =uuidv4();
+      const newMovieId = new ObjectId().toString();
       console.log(newMovieId)
       const clonedMovieData = {
         id: newMovieId,
