@@ -168,7 +168,7 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
       const newMovieId =uuidv4();
       console.log(newMovieId)
       const clonedMovieData = {
-        _id: newMovieId,
+        id: newMovieId,
         createdAt: new Date(),
       };
       const clonedMovie = await MoviesModel.create(clonedMovieData);
