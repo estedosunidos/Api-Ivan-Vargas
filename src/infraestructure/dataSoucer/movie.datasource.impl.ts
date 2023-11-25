@@ -161,17 +161,19 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
       console.log(  id)
      
       const originalMovie = await MoviesModel.findById(id);
+      console.log( originalMovie)
       if (!originalMovie) {
         throw new Error('Original movie not found');
       }
       const newMovieId = new ObjectId().toString();
+      console.log(newMovieId)
       const clonedMovieData = {
         _id: newMovieId,
         createdAt: new Date(),
       };
       const clonedMovie = await MoviesModel.create(clonedMovieData);
-
-      return clonedMovie.toObject();
+      const updatedMovie = await clonedMovie.save();
+      return updatedMovie.toObject();
     } catch (error) {
       console.error('Error cloning movie:', error);
       throw new Error('Error cloning movie');
