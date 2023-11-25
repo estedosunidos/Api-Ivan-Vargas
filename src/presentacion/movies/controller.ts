@@ -38,8 +38,7 @@ export class MoviesController {
   };
    Clonapelicula =async(req:Request,res:Response)=>{
     console.log(req.params)
-    console.log(req.body)
-    const [error, cloneMovieDto] = CloneMovieDto.create(req.params,req.body)
+    const [error, cloneMovieDto] = CloneMovieDto.create(req.params)
     console.log(cloneMovieDto);
 
     if (error) {
