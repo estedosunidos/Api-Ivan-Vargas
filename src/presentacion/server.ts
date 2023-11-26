@@ -1,5 +1,7 @@
 import express, { Router,Request, Response, NextFunction  } from "express";
 import cors from "cors";
+import swaggerUi from 'swagger-ui-express';
+;
 interface Opitions {
   port: number;
   routes: Router;
@@ -20,6 +22,8 @@ export class Server {
     this.app.use(cors());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(this.routes);
+    const swaggerDocument = require('../../.swagger.json'); 
+    this.app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     this.app.listen(this.port, () => {
       console.log("listening on port " + this.port);
     });

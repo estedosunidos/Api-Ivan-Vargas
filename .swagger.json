@@ -1,0 +1,185 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "Api de pelicula",
+      "description": "Esta api almacena los datos de muchas peliculas y tambien puede crear reseña de la misma pelicula \n",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "https://api-ivan-vargas-production.up.railway.app/"
+      }
+    ],
+    "tags": [
+      {
+        "name": "Peliculas",
+        "description": "Este endpoint maneja toda la informacion relacionada con las peliculas"
+      }
+    ],
+    "paths": {
+      "/paginacionMovies/{page}/{pageSize}": {
+        "get": {
+          "summary": "Get paginated movies",
+          "parameters": [
+            {
+              "name": "page",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "Page number"
+            },
+            {
+              "name": "pageSize",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "Page size"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/moviebyid/{movieId}": {
+        "get": {
+          "summary": "Get movie by ID",
+          "parameters": [
+            {
+              "name": "movieId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "ID of the movie"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/createMovies": {
+        "post": {
+          "summary": "Create a new movie",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/ClonaPelicula/{id}": {
+        "get": {
+          "summary": "Clone a movie",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "ID of the movie to clone"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/UpdateMovies/{id}": {
+        "put": {
+          "summary": "Update movie by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "ID of the movie to update"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/assignertomovietoplatform": {
+        "post": {
+          "summary": "Assign movie to platform",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/deleteMovies/{id}": {
+        "delete": {
+          "summary": "Delete movie by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "ID of the movie to delete"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/Assignartoreviewtomovies": {
+        "post": {
+          "summary": "Assign review to movies",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/readyPlatform": {
+        "get": {
+          "summary": "Get all platforms",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/createPlatform": {
+        "post": {
+          "summary": "Create a new platform",
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      }
+    }
+  }
