@@ -248,41 +248,45 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
   //ESTE ENDPOINT SIRVE PARA CREAR UNA PELICULA Y ALMACENARLA EN LA BASE DE DATO
   async register(registemoviesdto: RegisteMovieDto): Promise<MoviesEntity> {
     const { title, director, score } = registemoviesdto;
-  console.log(title, director, score);
+    console.log(title, director, score);
     try {
       // 1. Verifica si la película existe
       const exist = await MoviesModel.findOne({ title: title });
-      if (!exist) {
-        throw new Error("Película no encontrada");
+      if (exist) {
+        throw new Error("La película ya existe");
       }
-
+  
       // 2. Genera el slug
       const slug = slugify(title, {
         lower: true, // Convertir a minúsculas
         remove: /[*+~.()'"!:@]/g, // Eliminar caracteres especiales
       });
-
+  
       // 3. Crea la película
       const movie = await MoviesModel.create({
         title: title,
         slug: slug,
         director: director,
         score: score,
-        createdAt: Date.now().toLocaleString,
+        createdAt: new Date(),
       });
-
+  
       // 4. Mapea la respuesta a nuestra entidad
-      const movieEntity = MoviesMapper.MoviesEntityFromObject(movie);
-
+      const movieEntity = MoviesMapper.MoviesEntityFromObject(movie.toObject());
+  
       // 5. Devuelve la entidad
       return movieEntity;
     } catch (error) {
+      console.error("Error al registrar la película:", error);
+      
       if (error instanceof CustomError) {
         throw error;
       }
-      throw CustomError.internalserverError;
+      
+      throw new Error("Error al registrar la película");
     }
   }
+  
   //ESTE ENDPOINT SIRVE PARA TRAER INFORMACION DE LA BASE DE DATO
   async readMovies(): Promise<MoviesEntity[]> {
     try {
