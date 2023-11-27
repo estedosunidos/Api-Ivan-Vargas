@@ -178,13 +178,6 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
         throw new Error("Original movie not found");
       }
       // 2. Genera el slug
-      if (typeof title !== 'string') {
-        throw new Error('Title should be a string');
-      }
-      if (typeof title !== 'string' || !title.trim()) {
-        throw new Error('Title should be a non-empty string');
-      }
-      
       let uniqueSlug = slugify(title, { lower: true, remove: /[*+~.()'"!:@]/g });
       
   
