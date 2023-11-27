@@ -213,14 +213,15 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
   //ESTE ENDPOINT SIRVE PARA ACTUALIZAR LA PELICULA EN LA BASE DE DATO
   async UpdateMovie(updateemoviesdto: UpdateMovieDto): Promise<{ success: boolean; movie: MoviesEntity }> {
     const { movieId, title, director, score } = updateemoviesdto;
-  
+    console.log("Movie ID:", movieId);
     try {
       // 1. Encuentra la película por ID
       const movie = await MoviesModel.findById(movieId);
   
       if (!movie) {
-        throw new Error("Película no encontrada");
+        throw new Error(`Película no encontrada para el ID: ${movieId}`);
       }
+      
   
       // 2. Validación de datos de entrada
       if (!title || !director || !score) {
