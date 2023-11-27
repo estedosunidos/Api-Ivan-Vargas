@@ -178,15 +178,14 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
         throw new Error("Original movie not found");
       }
       // 2. Genera el slug
-      let suffix = 1;
-      let uniqueSlug = slugify(title, { lower: true, remove: /[*+~.()'"!:@]/g });
-
-      console.log("Unique Slug:", uniqueSlug);
-
-      while (await MoviesModel.findOne({ slug: uniqueSlug })) {
-        uniqueSlug = slugify(title + "-" + suffix, { lower: true, remove: /[*+~.()'"!:@]/g });
-        suffix++;
+      if (typeof title !== 'string') {
+        throw new Error('Title should be a string');
       }
+      if (typeof title !== 'string' || !title.trim()) {
+        throw new Error('Title should be a non-empty string');
+      }
+      
+      let uniqueSlug = slugify(title, { lower: true, remove: /[*+~.()'"!:@]/g });
       
   
       // 3. Crear un nuevo ID para la película clonada
