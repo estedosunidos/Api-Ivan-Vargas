@@ -280,6 +280,21 @@
     "/createPlatform": {
       "post": {
         "summary": "Create a new platform",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Aqui se pone el nombre de la plataforma streaming"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful response"
