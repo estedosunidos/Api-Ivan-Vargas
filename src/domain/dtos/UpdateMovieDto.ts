@@ -3,7 +3,7 @@ import { ReviewEntity } from "../entities/Review.Entitis";
 export class UpdateMovieDto  {
 
   constructor(
-    public movieId: string,
+    public id: string,
     public title: string,
     public slug: string,
     public director: string,
@@ -15,7 +15,7 @@ export class UpdateMovieDto  {
  
 
   static create(object: { [key: string]: any }): [string?, UpdateMovieDto?] {
-    const {movieId, title, slug, director, UpdatedAt, score, reviews  } = object;
+    const {id, title, slug, director, UpdatedAt, score, reviews  } = object;
 
 
     if (!title) {
@@ -30,6 +30,6 @@ export class UpdateMovieDto  {
       return ['Missing score'];
     }
 
-    return [undefined, new UpdateMovieDto( movieId,title, slug, director, UpdatedAt, score, reviews )];
+    return [undefined, new UpdateMovieDto( id,title, slug, director, UpdatedAt, score, reviews )];
   }
 }
