@@ -1,17 +1,21 @@
 export class CloneMovieDto {
   constructor(
     public id: string,
-    public title: string,
+    public title: string
   ) {}
 
-  static create(params: any): [string?, CloneMovieDto?] {
-    const { id,title } = params;
+  static create(params: any): CloneMovieDto | string {
+    const { id, title } = params;
 
-    // Basic validation: Check if id is a non-empty string
+    // Basic validation: Check if id and title are non-empty strings
     if (!id || typeof id !== 'string' || id.trim() === '') {
-      return ['Invalid id parameter'];
+      return 'Invalid id parameter';
     }
 
-    return [undefined, new CloneMovieDto(id,title)];
+    if (!title || typeof title !== 'string' || title.trim() === '') {
+      return 'Invalid title parameter';
+    }
+
+    return new CloneMovieDto(id, title);
   }
 }
