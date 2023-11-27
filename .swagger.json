@@ -17,6 +17,16 @@
     }
   ],
   "paths": {
+    "/readyMovies": {
+      "get": {
+        "summary": "Get all movie",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
     "/paginacionMovies/{page}/{pageSize}": {
       "get": {
         "summary": "Get paginated movies",
