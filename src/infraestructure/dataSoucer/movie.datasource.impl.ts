@@ -248,7 +248,7 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
   //ESTE ENDPOINT SIRVE PARA CREAR UNA PELICULA Y ALMACENARLA EN LA BASE DE DATO
   async register(registemoviesdto: RegisteMovieDto): Promise<MoviesEntity> {
     const { title, director, score } = registemoviesdto;
-
+  console.log(title, director, score);
     try {
       // 1. Verifica si la película existe
       const exist = await MoviesModel.findOne({ title: title });
