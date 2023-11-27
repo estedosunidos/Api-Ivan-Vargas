@@ -199,12 +199,13 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
       // 4. Crear los datos para la película clonada
       const clonedMovieData = {
         _id: newMovieId,
-        title: originalMovie.title,
+        title: trimmedTitle, 
         director: originalMovie.director,
         slug: uniqueSlug,
         score: originalMovie.score,
         createdAt: new Date(),
       };
+      
   
       // 5. Crear la película clonada
       const clonedMovie = await MoviesModel.create(clonedMovieData);
