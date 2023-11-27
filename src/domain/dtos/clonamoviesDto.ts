@@ -4,6 +4,20 @@ export class CloneMovieDto {
     public newTitle: string
   ) {}
 
+  // Iterator method for the class
+  [Symbol.iterator](): Iterator<string> {
+    // Assuming your iterator returns strings, replace with the actual type
+    const values = [this.originalMovieId, this.newTitle];
+    let index = 0;
+
+    return {
+      next: () => ({
+        value: values[index++],
+        done: index > values.length
+      })
+    };
+  }
+
   static create(params: any): CloneMovieDto | { error: string } {
     const { originalMovieId, newTitle } = params;
 
