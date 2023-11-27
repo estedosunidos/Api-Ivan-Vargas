@@ -166,11 +166,11 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
   //ESTE ENDPOINT SIRVE PARA CLONAR UNA PELICULAR  Y GENERAL UN NUEVO ID
   async cloneMovie(cloneMovieDto: CloneMovieDto): Promise<MoviesEntity> {
     try {
-      const { id, title } = cloneMovieDto;
-      console.log(id);
+      const { originalMovieId, newTitle } = cloneMovieDto;
+      console.log(originalMovieId);
   
       // 1. Encontrar la película original por su ID
-      const originalMovie = await MoviesModel.findById(id);
+      const originalMovie = await MoviesModel.findById(originalMovieId);
       console.log(originalMovie);
   
       // 2. Lanzar un error si la película original no se encuentra
@@ -179,12 +179,12 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
       }
   
       // 3. Genera el slug
-      if (!title || typeof title !== 'string') {
+      if (!newTitle || typeof newTitle !== 'string') {
         throw new Error('Invalid title for slug generation');
       }
   
-      // Asegúrate de que title no está vacío después de recortar espacios
-      const trimmedTitle = title.trim();
+      // Asegúrate de que newTitle no está vacío después de recortar espacios
+      const trimmedTitle = newTitle.trim();
       if (!trimmedTitle) {
         throw new Error('Title should not be empty for slug generation');
       }
@@ -220,7 +220,6 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
       throw new Error("Error cloning movie");
     }
   }
-  
   
   //ESTE ENDPOINT SIRVE PARA ACTUALIZAR LA PELICULA EN LA BASE DE DATO
   async UpdateMovie(updateemoviesdto: UpdateMovieDto): Promise<{ success: boolean; movie: MoviesEntity }> {

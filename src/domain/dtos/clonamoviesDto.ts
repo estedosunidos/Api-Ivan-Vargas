@@ -1,21 +1,21 @@
 export class CloneMovieDto {
   constructor(
-    public id: string,
-    public title: string
+    public originalMovieId: string,
+    public newTitle: string
   ) {}
 
-  static create(params: any): CloneMovieDto | string {
-    const { id, title } = params;
+  static create(params: any): CloneMovieDto | { error: string } {
+    const { originalMovieId, newTitle } = params;
 
-    // Basic validation: Check if id and title are non-empty strings
-    if (!id || typeof id !== 'string' || id.trim() === '') {
-      return 'Invalid id parameter';
+    // Basic validation: Check if originalMovieId and newTitle are non-empty strings
+    if (!originalMovieId || typeof originalMovieId !== 'string' || originalMovieId.trim() === '') {
+      return { error: 'Invalid originalMovieId parameter' };
     }
 
-    if (!title || typeof title !== 'string' || title.trim() === '') {
-      return 'Invalid title parameter';
+    if (!newTitle || typeof newTitle !== 'string' || newTitle.trim() === '') {
+      return { error: 'Invalid newTitle parameter' };
     }
 
-    return new CloneMovieDto(id, title);
+    return new CloneMovieDto(originalMovieId, newTitle);
   }
 }
