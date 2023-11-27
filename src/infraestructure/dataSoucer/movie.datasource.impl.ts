@@ -177,6 +177,8 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
       if (!originalMovie) {
         throw new Error("Original movie not found");
       }
+      // 2. Genera el slug
+ 
   
       // 3. Crear un nuevo ID para la película clonada
       const newMovieId = new ObjectId();
@@ -187,6 +189,7 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
         _id: newMovieId,
         title: originalMovie.title,
         director: originalMovie.director,
+        slug: originalMovie.slug,
         score: originalMovie.score,
         createdAt: new Date(),
       };
