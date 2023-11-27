@@ -178,7 +178,18 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
         throw new Error("Original movie not found");
       }
       // 2. Genera el slug
-      let uniqueSlug = slugify(title, { lower: true, remove: /[*+~.()'"!:@]/g });
+      if (!title || typeof title !== 'string') {
+        throw new Error('Invalid title for slug generation');
+      }
+      
+      // Asegúrate de que title no está vacío después de recortar espacios
+      const trimmedTitle = title.trim();
+      if (!trimmedTitle) {
+        throw new Error('Title should not be empty for slug generation');
+      }
+      
+      let uniqueSlug = slugify(trimmedTitle, { lower: true, remove: /[*+~.()'"!:@]/g });
+      
       
   
       // 3. Crear un nuevo ID para la película clonada
