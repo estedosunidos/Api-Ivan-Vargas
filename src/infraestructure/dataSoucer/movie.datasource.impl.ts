@@ -166,7 +166,7 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
   //ESTE ENDPOINT SIRVE PARA CLONAR UNA PELICULAR  Y GENERAL UN NUEVO ID
   async cloneMovie(cloneMovieDto: CloneMovieDto): Promise<MoviesEntity> {
     try {
-      const { id } = cloneMovieDto;
+      const { id,title } = cloneMovieDto;
       console.log(id);
   
       // 1. Encontrar la película original por su ID
@@ -178,7 +178,16 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
         throw new Error("Original movie not found");
       }
       // 2. Genera el slug
- 
+      let suffix = 1;
+      let uniqueSlug = slugify(title, { lower: true, remove: /[*+~.()'"!:@]/g });
+
+      console.log("Unique Slug:", uniqueSlug);
+
+      while (await MoviesModel.findOne({ slug: uniqueSlug })) {
+        uniqueSlug = slugify(title + "-" + suffix, { lower: true, remove: /[*+~.()'"!:@]/g });
+        suffix++;
+      }
+      
   
       // 3. Crear un nuevo ID para la película clonada
       const newMovieId = new ObjectId();
@@ -189,7 +198,7 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
         _id: newMovieId,
         title: originalMovie.title,
         director: originalMovie.director,
-        slug: originalMovie.slug,
+        slug: uniqueSlug,
         score: originalMovie.score,
         createdAt: new Date(),
       };
