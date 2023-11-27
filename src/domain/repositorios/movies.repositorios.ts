@@ -3,7 +3,7 @@ import { MoviesEntity } from "../entities/Movies.Entity";
 import { DeleteMovieDto } from '../dtos/DeleteMovieDto';
 import { UpdateMovieDto } from '../dtos/UpdateMovieDto';
 import { RegisteMovieDto } from '../dtos/RegisterMoviesDto';
-import { CloneMovieDto } from "../dtos/clonamoviesDto";
+import { CloneAndGenerateIdDto } from "../dtos/clonamoviesDto";
 import { PaginacionMovieDto } from "../dtos/PaginacionDto";
 import { ReviewEntity } from "../entities/Review.Entitis";
 import { AssignMovieToPlatformDto } from "../dtos/AssignMovieToPlatformDto";
@@ -16,7 +16,7 @@ export abstract class MoviesRepository {
     abstract UpdateMovie(updateMovieDto:UpdateMovieDto):Promise<{ success: boolean; movie: MoviesEntity }>
     abstract  findById(movieId: string): Promise<MoviesEntity | null>;
     abstract save(movie: MoviesEntity): Promise<MoviesEntity>;
-    abstract cloneMovie(cloneMovieDto:CloneMovieDto): Promise<MoviesEntity>;
+    abstract cloneMovie(cloneMovieDto:CloneAndGenerateIdDto): Promise<MoviesEntity>;
     abstract PaginacionMovie(paginacionMovieDto:PaginacionMovieDto): Promise<MoviesEntity[]>;
     abstract assignMovieToPlatform(assignMovieToPlatformDto: AssignMovieToPlatformDto): Promise<MoviesEntity>;
     abstract createReview(createReviewDto: CreateReviewDto): Promise<MoviesEntity>;

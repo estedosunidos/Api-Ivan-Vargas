@@ -7,7 +7,7 @@ import { GetByIdMoviesDTP } from "../../domain/dtos/GetByIdMovies";
 import { PaginacionMovieDto } from "../../domain/dtos/PaginacionDto";
 import { RegisteMovieDto } from "../../domain/dtos/RegisterMoviesDto";
 import { UpdateMovieDto } from "../../domain/dtos/UpdateMovieDto";
-import { CloneMovieDto } from "../../domain/dtos/clonamoviesDto";
+import { CloneAndGenerateIdDto } from "../../domain/dtos/clonamoviesDto";
 import { MoviesEntity } from "../../domain/entities/Movies.Entity";
 import { ReviewEntity } from "../../domain/entities/Review.Entitis";
 import { MoviesRepository } from "../../domain/repositorios/movies.repositorios";
@@ -32,7 +32,7 @@ export class MooviesRepositoryImple implements MoviesRepository {
     return this.moviesdatasource.PaginacionMovie(paginacionMovieDto);
   }
 
-  cloneMovie(cloneMovieDto: CloneMovieDto): Promise<MoviesEntity> {
+  cloneMovie(cloneMovieDto:CloneAndGenerateIdDto): Promise<MoviesEntity> {
     return this.moviesdatasource.cloneMovie(cloneMovieDto);
   }
 

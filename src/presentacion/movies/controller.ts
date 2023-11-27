@@ -3,7 +3,7 @@ import { MoviesRepository } from "../../domain/repositorios/movies.repositorios"
 import { CustomError } from "../../domain/error/custom.error";
 import { RegisteMovieDto } from "../../domain/dtos/RegisterMoviesDto";
 import { UpdateMovieDto } from "../../domain/dtos/UpdateMovieDto";
-import { CloneMovieDto } from "../../domain/dtos/clonamoviesDto";
+import { CloneAndGenerateIdDto } from "../../domain/dtos/clonamoviesDto";
 import { PaginacionMovieDto } from "../../domain/dtos/PaginacionDto";
 import { AssignMovieToPlatformDto } from "../../domain/dtos/AssignMovieToPlatformDto";
 import { CreateReviewDto } from "../../domain/dtos/CreateReviewDto ";
@@ -36,24 +36,30 @@ export class MoviesController {
       .catch((error) => res.status(500).json(error))
       .catch((error) => this.handleErrror(error, res));
   };
-   Clonapelicula =async(req:Request,res:Response)=>{
-    console.log(req.params)
-    const [error, cloneMovieDto] = CloneMovieDto.create(req.params)
-    console.log(cloneMovieDto);
 
-    if (error) {
-      return res.status(400).json({ error });
-    }
-
-    try {
-      const clonedMovie = await this.moviesRepository.cloneMovie(cloneMovieDto!);
-      res.status(200).json({ data: clonedMovie });
-    } catch (error) {
-      console.error('Error clonando película:', error);
-      res.status(500).json({ error: 'Error al clonar la película.' });
-    }
+    CloneAndGenerateId = async (req: Request, res: Response) => {
+      console.log(req.params);
   
-     }
+      const { originalMovieId, newTitle, generateNewId } = req.params;
+      const cloneAndGenerateIdDtoOrError = CloneAndGenerateIdDto.create({
+        originalMovieId,
+        newTitle,
+        generateNewId
+      });
+  
+      if ('error' in cloneAndGenerateIdDtoOrError) {
+        return res.status(400).json({ error: cloneAndGenerateIdDtoOrError.error });
+      }
+  
+      try {
+        const clonedMovie = await this.moviesRepository.cloneMovie(cloneAndGenerateIdDtoOrError);
+        res.status(200).json({ data: clonedMovie });
+      } catch (error) {
+        console.error('Error cloning and generating new ID:', error);
+        res.status(500).json({ error: 'Error cloning and generating new ID.' });
+      }
+    };
+     
   Paginacionpelicula = async (req: Request, res: Response) => {
     console.log(req.params);
     const [error, paginacionMovieDto] = PaginacionMovieDto.create(req.params);

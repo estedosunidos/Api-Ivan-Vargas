@@ -23,7 +23,7 @@ export class AppRouets {
     router.get("/paginacionMovies/:page?/:pageSize?", controller.Paginacionpelicula);
     router.get("/moviebyid/:movieId", controller.moviebyid);
     router.post("/createMovies", controller.registerMovies);
-    router.get("/ClonaPelicula/:id", controller.Clonapelicula);
+    router.post("/ClonaPelicula/:id", controller.CloneAndGenerateId);
     router.put("/UpdateMovies/:id", controller.UpdadeMovies);
     router.post("/assignertomovietoplatform",controller.Assignartoplatformtomovies)
     router.delete("/deleteMovies/:id", controller.deleteMovies)

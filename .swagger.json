@@ -110,7 +110,7 @@
       }
     },
     "/ClonaPelicula/{id}": {
-      "get": {
+      "post": {
         "summary": "Clone a movie",
         "parameters": [
           {
