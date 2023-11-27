@@ -166,38 +166,23 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
   //ESTE ENDPOINT SIRVE PARA CLONAR UNA PELICULAR  Y GENERAL UN NUEVO ID
   async cloneMovie(cloneMovieDto: CloneAndGenerateIdDto): Promise<MoviesEntity> {
     try {
-      const { originalMovieId, newTitle, generateNewId } = cloneMovieDto;
-      console.log(originalMovieId);
+      const { originalMovieId } = cloneMovieDto;
 
       // 1. Encontrar la película original por su ID
       const originalMovie = await MoviesModel.findById(originalMovieId);
-      console.log(originalMovie);
 
       // 2. Lanzar un error si la película original no se encuentra
       if (!originalMovie) {
         throw new Error("Original movie not found");
       }
 
-      // 3. Genera el slug
-      if (!newTitle || typeof newTitle !== 'string') {
-        throw new Error('Invalid title for slug generation');
-      }
-
-      // Asegúrate de que newTitle no está vacío después de recortar espacios
-      const trimmedTitle = newTitle.trim();
-      if (!trimmedTitle) {
-        throw new Error('Title should not be empty for slug generation');
-      }
-
+      // 3. Generar el slug
+      const trimmedTitle = originalMovie.title.trim();
       let uniqueSlug = slugify(trimmedTitle, { lower: true, remove: /[*+~.()'"!:@]/g });
 
-      // 4. Crear un nuevo ID para la película clonada, si es necesario
-      const newMovieId = generateNewId ? new ObjectId() : originalMovie._id;
-      console.log(newMovieId);
-
-      // 5. Crear los datos para la película clonada
+      // 4. Crear los datos para la película clonada
       const clonedMovieData = {
-        _id: newMovieId,
+        _id: originalMovie._id, // Use the same ID as the original movie
         title: trimmedTitle,
         director: originalMovie.director,
         slug: uniqueSlug,
@@ -205,18 +190,18 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
         createdAt: new Date(),
       };
 
-      // 6. Crear la película clonada
+      // 5. Crear la película clonada
       const clonedMovie = await MoviesModel.create(clonedMovieData);
 
-      // 7. Mapear la respuesta a una entidad antes de devolverla
+      // 6. Mapear la respuesta a una entidad antes de devolverla
       const clonedMovieEntity = MoviesMapper.MoviesEntityFromObject(clonedMovie.toObject());
 
-      // 8. Devolver la entidad clonada
+      // 7. Devolver la entidad clonada
       return clonedMovieEntity;
     } catch (error) {
       console.error("Error cloning movie:", error);
 
-      // 9. Lanzar un error genérico en caso de fallo
+      // 8. Lanzar un error genérico en caso de fallo
       throw new Error("Error cloning movie");
     }
   }
