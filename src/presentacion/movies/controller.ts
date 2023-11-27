@@ -3,7 +3,7 @@ import { MoviesRepository } from "../../domain/repositorios/movies.repositorios"
 import { CustomError } from "../../domain/error/custom.error";
 import { RegisteMovieDto } from "../../domain/dtos/RegisterMoviesDto";
 import { UpdateMovieDto } from "../../domain/dtos/UpdateMovieDto";
-import { CloneAndGenerateIdDto } from "../../domain/dtos/clonamoviesDto";
+import { CloneMovieDto } from "../../domain/dtos/clonamoviesDto";
 import { PaginacionMovieDto } from "../../domain/dtos/PaginacionDto";
 import { AssignMovieToPlatformDto } from "../../domain/dtos/AssignMovieToPlatformDto";
 import { CreateReviewDto } from "../../domain/dtos/CreateReviewDto ";
@@ -41,7 +41,7 @@ export class MoviesController {
       console.log(req.params);
   
       const { originalMovieId, newTitle, generateNewId } = req.params;
-      const cloneAndGenerateIdDtoOrError = CloneAndGenerateIdDto.create({
+      const cloneAndGenerateIdDtoOrError = CloneMovieDto.create({
         originalMovieId,
         newTitle,
         generateNewId

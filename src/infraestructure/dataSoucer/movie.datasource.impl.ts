@@ -6,7 +6,7 @@ import slugify from "slugify";
 import { MoviesMapper } from "../mappers/movies.mapper";
 import { UpdateMovieDto } from "../../domain/dtos/UpdateMovieDto";
 import { RegisteMovieDto } from "../../domain/dtos/RegisterMoviesDto";
-import { CloneAndGenerateIdDto } from "../../domain/dtos/clonamoviesDto";
+import { CloneMovieDto } from "../../domain/dtos/clonamoviesDto";
 import { v4 as uuidv4 } from "uuid";
 import { PaginacionMovieDto } from "../../domain/dtos/PaginacionDto";
 import { ObjectId } from "mongodb";
@@ -164,47 +164,63 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
     }
   }
   //ESTE ENDPOINT SIRVE PARA CLONAR UNA PELICULAR  Y GENERAL UN NUEVO ID
-  async cloneMovie(cloneMovieDto: CloneAndGenerateIdDto): Promise<MoviesEntity> {
-    try {
-      const { originalMovieId } = cloneMovieDto;
+  async cloneMovie(cloneMovieDto: CloneMovieDto): Promise<MoviesEntity> {
 
-      // 1. Encontrar la película original por su ID
-      const originalMovie = await MoviesModel.findById(originalMovieId);
-
-      // 2. Lanzar un error si la película original no se encuentra
-      if (!originalMovie) {
-        throw new Error("Original movie not found");
+      const { originalMovieId, newTitle } = cloneMovieDto;
+      console.log(originalMovieId, newTitle);
+  
+      try {
+        // 1. Find the original movie by its ID
+        const originalMovie = await MoviesModel.findById(originalMovieId);
+  
+        // 2. Throw an error if the original movie is not found
+        if (!originalMovie) {
+          throw new Error("Original movie not found");
+        }
+  
+        // 3. Check if the cloned movie with the new title already exists
+        const exist = await MoviesModel.findOne({ title: newTitle });
+        if (exist) {
+          throw new Error("The cloned movie with the new title already exists");
+        }
+  
+        // 4. Generate the slug for the new title
+        const slug = slugify(newTitle, {
+          lower: true,
+          remove: /[*+~.()'"!:@]/g, 
+        });
+  
+        // 5. Generate a new ID for the cloned movie
+        const newMovieId = new ObjectId();
+  
+        // 6. Create the cloned movie
+        const clonedMovie = await MoviesModel.create({
+          _id: newMovieId,
+          title: newTitle,
+          slug: slug,
+          director: originalMovie.director,
+          score: originalMovie.score,
+          createdAt: new Date(),
+        });
+  
+        // 7. Map the response to our entity
+        const clonedMovieEntity = MoviesMapper.MoviesEntityFromObject(clonedMovie.toObject());
+  
+        // 8. Return the entity
+        return clonedMovieEntity;
+      } catch (error) {
+        console.error("Error cloning movie:", error);
+  
+        // 9. Rethrow a CustomError if it's already a custom error
+        if (error instanceof CustomError) {
+          throw error;
+        }
+  
+        // 10. Throw a generic error in case of failure
+        throw new Error("Error cloning movie");
       }
-
-      // 3. Generar el slug
-      const trimmedTitle = originalMovie.title.trim();
-      let uniqueSlug = slugify(trimmedTitle, { lower: true, remove: /[*+~.()'"!:@]/g });
-
-      // 4. Crear los datos para la película clonada
-      const clonedMovieData = {
-        _id: originalMovie._id, // Use the same ID as the original movie
-        title: trimmedTitle,
-        director: originalMovie.director,
-        slug: uniqueSlug,
-        score: originalMovie.score,
-        createdAt: new Date(),
-      };
-
-      // 5. Crear la película clonada
-      const clonedMovie = await MoviesModel.create(clonedMovieData);
-
-      // 6. Mapear la respuesta a una entidad antes de devolverla
-      const clonedMovieEntity = MoviesMapper.MoviesEntityFromObject(clonedMovie.toObject());
-
-      // 7. Devolver la entidad clonada
-      return clonedMovieEntity;
-    } catch (error) {
-      console.error("Error cloning movie:", error);
-
-      // 8. Lanzar un error genérico en caso de fallo
-      throw new Error("Error cloning movie");
     }
-  }
+    
   
   //ESTE ENDPOINT SIRVE PARA ACTUALIZAR LA PELICULA EN LA BASE DE DATO
   async UpdateMovie(updateemoviesdto: UpdateMovieDto): Promise<{ success: boolean; movie: MoviesEntity }> {
