@@ -13,7 +13,7 @@ import { GetByIdMoviesDTP } from "../dtos/GetByIdMovies";
 export abstract class MoviesRepository {
     abstract register(registemoviesdto:RegisteMovieDto):Promise<MoviesEntity>
     abstract readMovies(): Promise<MoviesEntity[]>;
-    abstract UpdateMovie(updateMovieDto:UpdateMovieDto):Promise<MoviesEntity>
+    abstract UpdateMovie(updateMovieDto:UpdateMovieDto):Promise<{ success: boolean; movie: MoviesEntity }>
     abstract  findById(movieId: string): Promise<MoviesEntity | null>;
     abstract save(movie: MoviesEntity): Promise<MoviesEntity>;
     abstract cloneMovie(cloneMovieDto:CloneMovieDto): Promise<MoviesEntity>;

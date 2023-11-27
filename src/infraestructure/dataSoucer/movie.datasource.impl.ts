@@ -211,42 +211,43 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
   }
   
   //ESTE ENDPOINT SIRVE PARA ACTUALIZAR LA PELICULA EN LA BASE DE DATO
-  async UpdateMovie(updateemoviesdto: UpdateMovieDto): Promise<MoviesEntity> {
+  async UpdateMovie(updateemoviesdto: UpdateMovieDto): Promise<{ success: boolean; movie: MoviesEntity }> {
     const { movieId, title, director, score } = updateemoviesdto;
-    console.log(movieId, title, director, score);
   
     try {
       // 1. Encuentra la película por ID
       const movie = await MoviesModel.findById(movieId);
-      console.log(movie);
   
       if (!movie) {
         throw new Error("Película no encontrada");
       }
   
-      // 2. Genera el slug
+      // 2. Validación de datos de entrada
+      if (!title || !director || !score) {
+        throw new Error("Datos de entrada incompletos");
+      }
+  
+      // 3. Genera el slug
       const slug = slugify(title, {
         lower: true,
         remove: /[*+~.()'"!:@]/g,
       });
   
-      // 3. Actualiza las propiedades de la película
+      // 4. Actualiza las propiedades de la película
       movie.title = title;
       movie.slug = slug;
       movie.director = director;
       movie.score = score;
       movie.updatedAt = new Date();
   
-      // 4. Guarda la película actualizada
+      // 5. Guarda la película actualizada
       const updatedMovie = await movie.save();
   
-      // 5. Mapea la respuesta a nuestra entidad
-      const movieEntity = MoviesMapper.MoviesEntityFromObject(
-        updatedMovie.toObject()
-      );
+      // 6. Mapea la respuesta a nuestra entidad
+      const movieEntity = MoviesMapper.MoviesEntityFromObject(updatedMovie.toObject());
   
-      // 6. Devuelve la entidad
-      return movieEntity;
+      // 7. Devuelve la entidad actualizada
+      return { success: true, movie: movieEntity };
     } catch (error) {
       console.error("Error al actualizar la película:", error);
   
@@ -254,7 +255,8 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
         throw error;
       }
   
-      throw new Error("Error al actualizar la película");
+      // 8. Devuelve un objeto de error
+      throw new Error("Error al registrar la película");
     }
   }
   

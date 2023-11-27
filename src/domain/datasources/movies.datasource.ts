@@ -14,7 +14,7 @@ export abstract class MoviesDatasource {
     abstract register(registemoviesdto:RegisteMovieDto):Promise<MoviesEntity>
     abstract readMovies():Promise<MoviesEntity[]>
     abstract cloneMovie(cloneMovieDto:CloneMovieDto): Promise<MoviesEntity>;
-    abstract UpdateMovie(updateMovieDto:UpdateMovieDto):Promise<MoviesEntity>
+    abstract UpdateMovie(updateMovieDto:UpdateMovieDto):Promise<{ success: boolean; movie: MoviesEntity }>
     abstract assignMovieToPlatform(assignMovieToPlatformDto: AssignMovieToPlatformDto): Promise<MoviesEntity>;
     abstract createReview(createReviewDto: CreateReviewDto): Promise<MoviesEntity>;
     abstract GetByIdMovie(getByIdMoviesDTP:GetByIdMoviesDTP):Promise <ReviewEntity[] >

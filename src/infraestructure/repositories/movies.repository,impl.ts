@@ -49,7 +49,7 @@ export class MooviesRepositoryImple implements MoviesRepository {
     return savedMovie.toObject();
   }
  
-  UpdateMovie(updatemoviesdto: UpdateMovieDto): Promise<MoviesEntity> {
+  UpdateMovie(updatemoviesdto: UpdateMovieDto): Promise<{ success: boolean; movie: MoviesEntity }> {
     return this.moviesdatasource.UpdateMovie(updatemoviesdto);
   }
   readMovies(): Promise<MoviesEntity[]> {
