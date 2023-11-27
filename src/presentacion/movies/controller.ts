@@ -66,8 +66,6 @@ export class MoviesController {
   };
 
   readMovies = async (req: Request, res: Response) => {
-    // El método `readMovies` no parece necesitar un DTO en el cuerpo de la solicitud.
-    // Si no es necesario, puedes omitir el uso de `RegisterMoviesDto`.
     console.log("jjsdjdj");
     this.moviesRepository
       .readMovies()

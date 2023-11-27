@@ -7,7 +7,7 @@ const moviesSchema = new mongoose.Schema({
     },
     slug: {
         type: String,
-        unique: true, // Asegura que cada película tenga un slug único
+        unique: true, 
     },
     director: {
         type: String,

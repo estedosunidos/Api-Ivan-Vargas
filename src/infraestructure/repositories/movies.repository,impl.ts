@@ -24,9 +24,6 @@ export class MooviesRepositoryImple implements MoviesRepository {
   GetByIdMovie(getByIdMoviesDTP: GetByIdMoviesDTP): Promise<ReviewEntity[] > {
     return this.moviesdatasource.GetByIdMovie(getByIdMoviesDTP);
   }
-  // createReview(assignMovieToPlatformDto: AssignMovieToPlatformDto): Promise<MoviesEntity> {
-  //   return this.moviesdatasource.createReview(assignMovieToPlatformDto);
-  // }
   assignMovieToPlatform(assignMovieToPlatformDto: AssignMovieToPlatformDto): Promise<MoviesEntity> {
     return this.moviesdatasource .assignMovieToPlatform(assignMovieToPlatformDto);
   }
