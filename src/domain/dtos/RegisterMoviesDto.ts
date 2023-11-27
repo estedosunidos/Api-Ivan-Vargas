@@ -8,7 +8,7 @@ export class RegisteMovieDto {
     public director: string,
     public createdAt: Date,
     public score: number,
-    public reviews: ReviewEntity[] = [] // Agregamos la propiedad reviews con un valor predeterminado de un array vacío
+    public reviews: ReviewEntity[] = [] 
   ) {}
 
   static create(object: { [key: string]: any }): [string?, RegisteMovieDto?] {

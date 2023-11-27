@@ -29,7 +29,6 @@ export class AppRouets {
     router.delete("/deleteMovies/:id", controller.deleteMovies)
     router.post("/Assignartoreviewtomovies", controller.Assignartoreviewtomovies);
     //ruta de platafaoma (Netflix,Disney pls, HBO MAX,Hulu,Apple tv and Amazon prime)
-    router.get("/readyPlatform", controller3.readPltform);
     router.post("/createPlatform", controller3.registerPlatform);
     return router;
   }

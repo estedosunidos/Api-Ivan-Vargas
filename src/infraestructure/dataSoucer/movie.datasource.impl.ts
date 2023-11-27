@@ -18,6 +18,7 @@ import { DeleteMovieDto } from "../../domain/dtos/DeleteMovieDto";
 import { CreateReviewDto } from "../../domain/dtos/CreateReviewDto ";
 import { GetByIdMoviesDTP } from "../../domain/dtos/GetByIdMovies";
 export class MovsiesDataSourceImpl implements MoviesDatasource {
+   //ESTE ENDPOINT SIRVE para mostra una pelicula por si id la siguente infoormacion todos sus datos yla reseña separada por plataforma
   async GetByIdMovie(
     getByIdMoviesDTP: GetByIdMoviesDTP
   ): Promise<ReviewEntity[]> {
@@ -62,7 +63,7 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
       throw new CustomError(500, "Internal Server Error");
     }
   }
-
+    //ESTE ENDPOINT SIRVE PARA crear una reseña y assignarla ala pelicula segun el id y ala plataforma segun  el id 
   async createReview(createReviewDto: CreateReviewDto): Promise<MoviesEntity> {
     try {
       const { movieId, platformId, author, body, score } = createReviewDto;
@@ -100,13 +101,12 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
       throw CustomError.internalserverError("Error creating review");
     }
   }
-
+  //ESTE ENDPOINT SIRVE PARA eliminar una peliucla dependiento del id
   async deleteMovie(deleteMovieDto: DeleteMovieDto): Promise<void> {
     try {
       await MoviesModel.deleteOne({ _id: deleteMovieDto.id });
     } catch (error) {
-      // Manejar errores
-      //console.error(`Error deleting movie: ${error.message}`);
+
       throw new Error("Error deleting movie");
     }
   }
@@ -140,7 +140,7 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
       throw new Error("Error assigning movie to platform");
     }
   }
-
+    //ESTE ENDPOINT SIRVE PARA  paginar las peliculas
   async PaginacionMovie(
     paginacionMovieDto: PaginacionMovieDto
   ): Promise<MoviesEntity[]> {
@@ -199,50 +199,51 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
   async UpdateMovie(updateemoviesdto: UpdateMovieDto): Promise<MoviesEntity> {
     const { movieId, title, director, score } = updateemoviesdto;
     console.log(movieId, title, director, score);
-
+  
     try {
       // 1. Encuentra la película por ID
       const movie = await MoviesModel.findById(movieId);
       console.log(movie);
-
+  
       if (!movie) {
         throw new Error("Película no encontrada");
       }
-
+  
       // 2. Genera el slug
       const slug = slugify(title, {
         lower: true,
         remove: /[*+~.()'"!:@]/g,
       });
-
+  
       // 3. Actualiza las propiedades de la película
-      movie.id = movieId;
       movie.title = title;
       movie.slug = slug;
       movie.director = director;
       movie.score = score;
-      // movie.updatedAt = Date.now();
-
+      movie.updatedAt = new Date();
+  
       // 4. Guarda la película actualizada
       const updatedMovie = await movie.save();
-
+  
       // 5. Mapea la respuesta a nuestra entidad
       const movieEntity = MoviesMapper.MoviesEntityFromObject(
         updatedMovie.toObject()
       );
-
+  
       // 6. Devuelve la entidad
       return movieEntity;
     } catch (error) {
       console.error("Error al actualizar la película:", error);
-
+  
       if (error instanceof CustomError) {
         throw error;
       }
-
+  
       throw new Error("Error al actualizar la película");
     }
   }
+  
+  
 
   //ESTE ENDPOINT SIRVE PARA CREAR UNA PELICULA Y ALMACENARLA EN LA BASE DE DATO
   async register(registemoviesdto: RegisteMovieDto): Promise<MoviesEntity> {
@@ -251,10 +252,8 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
     try {
       // 1. Verifica si la película existe
       const exist = await MoviesModel.findOne({ title: title });
-      if (exist) {
-        //throw new CustomError.BadRequest(
-        ///"El título de la película ya existe en la base de datos"
-        //);
+      if (!exist) {
+        throw new Error("Película no encontrada");
       }
 
       // 2. Genera el slug
@@ -269,7 +268,7 @@ export class MovsiesDataSourceImpl implements MoviesDatasource {
         slug: slug,
         director: director,
         score: score,
-        createdAt: Date.now(), // Aquí deberías llamar a la función Date.now() para obtener la fecha actual
+        createdAt: Date.now().toLocaleString,
       });
 
       // 4. Mapea la respuesta a nuestra entidad

@@ -1,24 +1,22 @@
+import { ReviewEntity } from "../entities/Review.Entitis";
+
 export class UpdateMovieDto  {
-  movieId: string;
-  title: string;
-  director: string;
-  score: number;
-  updatedAt: Date;
-  constructor(movieId: string, title: string, director: string, score: number, updatedAt: Date) {
-    this.movieId = movieId;
-    this.title = title;
-    this.director = director;
-    this.score = score;
-    this.updatedAt= updatedAt;
-  }
+
+  constructor(
+    public movieId: string,
+    public title: string,
+    public slug: string,
+    public director: string,
+    public UpdatedAt: Date,
+    public score: number,
+    public reviews: ReviewEntity[] = [] 
+  ) {}
+
  
 
   static create(object: { [key: string]: any }): [string?, UpdateMovieDto?] {
-    const { movieId, title, director, score,updatedAt } = object;
+    const {movieId, title, slug, director, UpdatedAt, score, reviews  } = object;
 
-    if (!movieId) {
-      return ['Missing movieId'];
-    }
 
     if (!title) {
       return ['Missing title'];
@@ -32,6 +30,6 @@ export class UpdateMovieDto  {
       return ['Missing score'];
     }
 
-    return [undefined, new UpdateMovieDto(movieId, title, director, score ,updatedAt)];
+    return [undefined, new UpdateMovieDto( movieId,title, slug, director, UpdatedAt, score, reviews )];
   }
 }
